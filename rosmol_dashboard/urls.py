@@ -15,8 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from drf_yasg.openapi import Info
+from drf_yasg.views import get_schema_view
 
 urlpatterns = [
+    path('swagger/', get_schema_view(Info(title="Dashboard Росмолодёжь API", default_version='v1')).with_ui('swagger')),
+
     path("admin/", admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('datastorage/', include('datastorage.urls')),
