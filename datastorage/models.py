@@ -39,7 +39,7 @@ class DataName(models.Model):
     name = models.CharField("Название", max_length=1024)
     section = models.ForeignKey(DataSection, models.CASCADE, "names", verbose_name="Раздел")
     head = models.ForeignKey(
-        "DataName", models.CASCADE, "sub_name", verbose_name="Старший название", null=True, blank=True
+        "DataName", models.CASCADE, "sub_names", verbose_name="Старший название", null=True, blank=True
     )
 
     def __str__(self):
