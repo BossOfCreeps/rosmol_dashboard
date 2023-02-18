@@ -1,3 +1,4 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
 
 from datastorage.models import DataValue, DataSection, DataCriteria, DataName, Area
@@ -13,11 +14,15 @@ class DataSectionAPIView(generics.ListAPIView):
 class DataCriteriaAPIView(generics.ListAPIView):
     serializer_class = DataCriteriaSerializer
     queryset = DataCriteria.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['section']
 
 
 class DataNameAPIView(generics.ListAPIView):
     serializer_class = DataNameSerializer
     queryset = DataName.objects.filter(head=None)
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['section']
 
 
 class AreaAPIView(generics.ListAPIView):

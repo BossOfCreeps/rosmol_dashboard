@@ -10,7 +10,7 @@ class DataSectionSerializer(serializers.ModelSerializer):
 
 
 class DataCriteriaSerializer(serializers.ModelSerializer):
-    unit = serializers.CharField(source="unit.name")
+    unit = serializers.CharField(source="unit.name", allow_null=True)
 
     class Meta:
         model = DataCriteria

@@ -1,9 +1,8 @@
 from collections import OrderedDict
 
-from django.db.models import QuerySet
 from rest_framework import serializers
 
-from datastorage.models import DataValue
+from datastorage.models import DataValue, Area
 
 
 class DateSerializer(serializers.Serializer):  # noqa
@@ -17,10 +16,10 @@ class ReformatterRequest(serializers.Serializer):  # noqa
     area_filter = serializers.ListField(child=serializers.UUIDField(), required=False)
     date_filter = serializers.ListField(child=DateSerializer(), required=False)
 
-    name_equal = serializers.IntegerField(required=False)
-    crit_equal = serializers.IntegerField(required=False)
-    area_equal = serializers.UUIDField(required=False)
-    date_equal = DateSerializer(required=False)
+    name_equal = serializers.ListField(child=serializers.IntegerField(), required=False)
+    crit_equal = serializers.ListField(child=serializers.IntegerField(), required=False)
+    area_equal = serializers.ListField(child=serializers.UUIDField(), required=False)
+    date_equal = serializers.ListField(child=DateSerializer(), required=False)
 
     filter_param = None
 
@@ -51,14 +50,21 @@ class ReformatterRequest(serializers.Serializer):  # noqa
             query = query.filter(name_id=self.validated_data.get("name_equal"))
 
         if self.validated_data.get("crit_equal") is not None:
-            query = query.filter(criteria_id=self.validated_data.get("crit_equal"))
+            query = query.filter(criteria_id__in=self.validated_data.get("crit_equal"))
 
         if self.validated_data.get("area_equal") is not None:
-            query = query.filter(area__head_uuids__icontains=self.validated_data.get("area_equal"))
+            area_ids = []
+            for area_equal in self.validated_data.get("area_equal"):
+                area_ids.extend([area.id for area in Area.objects.filter(head_uuids__icontains=area_equal)])
+            query = query.filter(area_id__in=area_ids)
 
         if self.validated_data.get("date_equal") is not None:
-            query = query.filter(date__year=self.validated_data.get("date_equal").get("year"))
-            if self.validated_data.get("date_equal").get("month") is not None:
-                query = query.filter(date__month=self.validated_data.get("date_equal").get("month"))
+            ids = []
+            for date_equal in self.validated_data.get("date_equal"):
+                _query = query.filter(date__year=date_equal.get("year"))
+                if date_equal.get("month") is not None:
+                    _query = _query.filter(date__month=date_equal.get("month"))
+                ids.extend([q.id for q in _query])
+            query = query.filter(id__in=ids)
 
         return query
