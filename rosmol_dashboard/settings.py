@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    "accounts.apps.AccountsConfig",
     "datastorage.apps.DatastorageConfig",
     "reformatter.apps.ReformatterConfig",
 

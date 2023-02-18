@@ -35,6 +35,4 @@ class ReformatterAPIView(views.APIView):
 
             results.append(result)
 
-        return Response([
-            result for result in results
-        ])
+        return Response(results)

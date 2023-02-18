@@ -64,7 +64,7 @@ class Area(models.Model):
         cur_area, head_uuids = self, str(self.id)
         while cur_area.head:
             cur_area = cur_area.head
-            head_uuids += "/" + str(cur_area.id)
+            head_uuids += "\n" + str(cur_area.id)
         self.head_uuids = head_uuids
 
         return super(Area, self).save(*args, **kwargs)

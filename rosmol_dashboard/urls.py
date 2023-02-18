@@ -22,7 +22,6 @@ urlpatterns = [
     path('swagger/', get_schema_view(Info(title="Dashboard Росмолодёжь API", default_version='v1')).with_ui('swagger')),
 
     path("admin/", admin.site.urls),
-    path('accounts/', include('accounts.urls')),
     path('datastorage/', include('datastorage.urls')),
     path('reformatter/', include('reformatter.urls')),
 ]
