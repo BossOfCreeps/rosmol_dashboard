@@ -68,3 +68,9 @@ class ReformatterRequest(serializers.Serializer):  # noqa
             query = query.filter(id__in=ids)
 
         return query
+
+
+class CreateCSVRequest(serializers.Serializer):  # noqa
+    headers = serializers.ListField(child=serializers.CharField())
+    names = serializers.ListField(child=serializers.CharField())
+    data = serializers.ListField(child=serializers.ListField(child=serializers.CharField()))

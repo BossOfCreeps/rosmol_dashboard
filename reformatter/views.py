@@ -1,8 +1,12 @@
+import csv
+from io import StringIO
+
+from django.http import HttpResponse
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import views, status
 from rest_framework.response import Response
 
-from reformatter.serializers import ReformatterRequest
+from reformatter.serializers import ReformatterRequest, CreateCSVRequest
 
 
 class ReformatterAPIView(views.APIView):
@@ -36,3 +40,21 @@ class ReformatterAPIView(views.APIView):
             results.append(result)
 
         return Response(results)
+
+
+class CreateCSVAPIView(views.APIView):
+    @swagger_auto_schema(request_body=CreateCSVRequest)
+    def post(self, request):
+        data = CreateCSVRequest(data=request.data)
+        if not data.is_valid():
+            return Response(data.errors, status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+        file = StringIO()
+        writer = csv.writer(file)
+        writer.writerow([""] + data.validated_data["headers"])
+        for i, row in enumerate(data.validated_data["data"]):
+            writer.writerow([data.validated_data["names"][i]] + row)
+
+        response = HttpResponse(file.getvalue(), content_type='application/csv')
+        response['Content-Disposition'] = 'attachment; filename="file.csv"'
+        return response
