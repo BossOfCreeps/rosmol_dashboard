@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from django.db import models
 
 
@@ -50,8 +52,22 @@ class DataName(models.Model):
 
 
 class Area(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     name = models.CharField("Название", max_length=1024)
     head = models.ForeignKey("Area", models.CASCADE, "sub_areas", verbose_name="Старший", blank=True, null=True)
+    head_uuids = models.TextField("История", blank=True, null=True)
+
+    latitude = models.FloatField("Широта", blank=True, null=True)
+    longitude = models.FloatField("Долгота", blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        cur_area, head_uuids = self, str(self.id)
+        while cur_area.head:
+            cur_area = cur_area.head
+            head_uuids += "/" + str(cur_area.id)
+        self.head_uuids = head_uuids
+
+        return super(Area, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.name}"

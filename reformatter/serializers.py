@@ -14,12 +14,12 @@ class DateSerializer(serializers.Serializer):  # noqa
 class ReformatterRequest(serializers.Serializer):  # noqa
     name_filter = serializers.ListField(child=serializers.IntegerField(), required=False)
     crit_filter = serializers.ListField(child=serializers.IntegerField(), required=False)
-    area_filter = serializers.ListField(child=serializers.IntegerField(), required=False)
+    area_filter = serializers.ListField(child=serializers.UUIDField(), required=False)
     date_filter = serializers.ListField(child=DateSerializer(), required=False)
 
     name_equal = serializers.IntegerField(required=False)
     crit_equal = serializers.IntegerField(required=False)
-    area_equal = serializers.IntegerField(required=False)
+    area_equal = serializers.UUIDField(required=False)
     date_equal = DateSerializer(required=False)
 
     filter_param = None
@@ -54,7 +54,7 @@ class ReformatterRequest(serializers.Serializer):  # noqa
             query = query.filter(criteria_id=self.validated_data.get("crit_equal"))
 
         if self.validated_data.get("area_equal") is not None:
-            query = query.filter(area_id=self.validated_data.get("area_equal"))
+            query = query.filter(area__head_uuids__icontains=self.validated_data.get("area_equal"))
 
         if self.validated_data.get("date_equal") is not None:
             query = query.filter(date__year=self.validated_data.get("date_equal").get("year"))

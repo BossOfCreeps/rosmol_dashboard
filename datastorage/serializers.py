@@ -38,7 +38,7 @@ class AreaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Area
-        fields = ("id", "name", "sub_areas")
+        fields = ("id", "name", "sub_areas", "latitude", "longitude")
 
 
 class DataValueSerializer(serializers.ModelSerializer):
