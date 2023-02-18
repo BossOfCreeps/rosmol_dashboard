@@ -66,6 +66,7 @@ class DataValue(models.Model):
     area = models.ForeignKey(Area, models.CASCADE, "values", verbose_name="Область")
     name = models.ForeignKey(DataName, models.CASCADE, "values", verbose_name="Название")
     criteria = models.ForeignKey(DataCriteria, models.CASCADE, "values", verbose_name="Критерий")
+    date = models.DateField("Дата")
 
     def __str__(self):
         return f"{self.name} / {self.criteria} / {self.area} / {self.value}"

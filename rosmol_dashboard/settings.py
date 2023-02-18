@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     "accounts.apps.AccountsConfig",
     "datastorage.apps.DatastorageConfig",
+    "reformatter.apps.ReformatterConfig",
 
     "rest_framework",
     "rest_framework.authtoken",

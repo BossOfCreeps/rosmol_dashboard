@@ -24,4 +24,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('datastorage/', include('datastorage.urls')),
+    path('reformatter/', include('reformatter.urls')),
 ]
