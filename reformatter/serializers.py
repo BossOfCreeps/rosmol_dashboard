@@ -47,7 +47,7 @@ class ReformatterRequest(serializers.Serializer):  # noqa
         query = DataValue.objects.all()
 
         if self.validated_data.get("name_equal") is not None:
-            query = query.filter(name_id=self.validated_data.get("name_equal"))
+            query = query.filter(name_id__in=self.validated_data.get("name_equal"))
 
         if self.validated_data.get("crit_equal") is not None:
             query = query.filter(criteria_id__in=self.validated_data.get("crit_equal"))

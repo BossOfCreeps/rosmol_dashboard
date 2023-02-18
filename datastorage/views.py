@@ -20,14 +20,14 @@ class DataCriteriaAPIView(generics.ListAPIView):
 
 class DataNameAPIView(generics.ListAPIView):
     serializer_class = DataNameSerializer
-    queryset = DataName.objects.filter(head=None)
+    queryset = DataName.objects.all()
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['section']
 
 
 class AreaAPIView(generics.ListAPIView):
     serializer_class = AreaSerializer
-    queryset = Area.objects.filter(head=None)
+    queryset = Area.objects.all()
 
 
 class DataViewSet(viewsets.ModelViewSet):
