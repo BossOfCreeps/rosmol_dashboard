@@ -6,7 +6,7 @@ from datastorage.models import DataValue, Area
 
 
 class DateSerializer(serializers.Serializer):  # noqa
-    month = serializers.IntegerField(required=False)
+    month = serializers.IntegerField(required=False, allow_null=True)
     year = serializers.IntegerField()
 
 
@@ -53,10 +53,7 @@ class ReformatterRequest(serializers.Serializer):  # noqa
             query = query.filter(criteria_id__in=self.validated_data.get("crit_equal"))
 
         if self.validated_data.get("area_equal") is not None:
-            area_ids = []
-            for area_equal in self.validated_data.get("area_equal"):
-                area_ids.extend([area.id for area in Area.objects.filter(head_uuids__icontains=area_equal)])
-            query = query.filter(area_id__in=area_ids)
+            query = query.filter(area_id__in=self.validated_data.get("area_equal"))
 
         if self.validated_data.get("date_equal") is not None:
             ids = []

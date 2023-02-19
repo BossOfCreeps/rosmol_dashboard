@@ -29,7 +29,7 @@ class ReformatterAPIView(views.APIView):
                 result = sum(value.value for value in values.filter(criteria_id=param))
 
             elif filter_param_name == "area_filter":
-                result = sum(value.value for value in values.filter(area__head_uuids__icontains=param))
+                result = sum(value.value for value in values.filter(area_id__in=param))
 
             elif filter_param_name == "date_filter":
                 temp = values.filter(date__year=param.get("year"))
