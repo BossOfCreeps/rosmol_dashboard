@@ -24,4 +24,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('datastorage/', include('datastorage.urls')),
     path('reformatter/', include('reformatter.urls')),
+    path('web/', include('web.urls')),
 ]
